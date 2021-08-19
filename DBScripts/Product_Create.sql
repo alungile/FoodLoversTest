@@ -1,0 +1,16 @@
+USE [FoodLovers]
+CREATE TABLE dbo.Product
+	(
+	ID int NOT NULL,
+	[Name] varchar(100) NOT NULL,
+	WeightedItem bit NOT NULL,
+	SuggestedSellingPrice decimal(14,2) NULL,
+	)  ON [PRIMARY]
+GO
+ALTER TABLE dbo.Product ADD CONSTRAINT
+	PK_Product PRIMARY KEY CLUSTERED 
+	(
+	ID
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO

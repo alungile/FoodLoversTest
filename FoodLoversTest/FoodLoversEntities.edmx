@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FoodLoversModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TelephoneNumber" Type="nvarchar" MaxLength="15" />
+          <Property Name="OpenDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BranchProduct">
+          <Key>
+            <PropertyRef Name="BranchID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="BranchID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="WeightedItem" Type="bit" Nullable="false" />
+          <Property Name="SuggestedSellingPrice" Type="decimal" Precision="14" Scale="2" />
+        </EntityType>
+        <Association Name="FK__BranchPro__Branc__403A8C7D">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="BranchProduct" Type="Self.BranchProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BranchProduct">
+              <PropertyRef Name="BranchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BranchPro__Produ__412EB0B6">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="BranchProduct" Type="Self.BranchProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BranchProduct">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FoodLoversModelStoreContainer">
+          <EntitySet Name="Branch" EntityType="Self.Branch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BranchProduct" EntityType="Self.BranchProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BranchPro__Branc__403A8C7D" Association="Self.FK__BranchPro__Branc__403A8C7D">
+            <End Role="Branch" EntitySet="Branch" />
+            <End Role="BranchProduct" EntitySet="BranchProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BranchPro__Produ__412EB0B6" Association="Self.FK__BranchPro__Produ__412EB0B6">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="BranchProduct" EntitySet="BranchProduct" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FoodLoversModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TelephoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="OpenDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Products" Relationship="Self.BranchProduct" FromRole="Branch" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WeightedItem" Type="Boolean" Nullable="false" />
+          <Property Name="SuggestedSellingPrice" Type="Decimal" Precision="14" Scale="2" />
+          <NavigationProperty Name="Branches" Relationship="Self.BranchProduct" FromRole="Product" ToRole="Branch" />
+        </EntityType>
+        <Association Name="BranchProduct">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="FoodLoversEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Branches" EntityType="Self.Branch" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <AssociationSet Name="BranchProduct" Association="Self.BranchProduct">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FoodLoversModelStoreContainer" CdmEntityContainer="FoodLoversEntities">
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="FoodLoversModel.Branch">
+              <MappingFragment StoreEntitySet="Branch">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TelephoneNumber" ColumnName="TelephoneNumber" />
+                <ScalarProperty Name="OpenDate" ColumnName="OpenDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="FoodLoversModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="WeightedItem" ColumnName="WeightedItem" />
+                <ScalarProperty Name="SuggestedSellingPrice" ColumnName="SuggestedSellingPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="BranchProduct" TypeName="FoodLoversModel.BranchProduct" StoreEntitySet="BranchProduct">
+            <EndProperty Name="Branch">
+              <ScalarProperty Name="ID" ColumnName="BranchID" />
+            </EndProperty>
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ID" ColumnName="ProductID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
